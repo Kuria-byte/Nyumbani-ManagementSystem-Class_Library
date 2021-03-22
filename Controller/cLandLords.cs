@@ -43,7 +43,7 @@ namespace ClassLibrary_PropertyManager.Controller
                 con.Open();
 
                 using (SqlCommand command = new SqlCommand("INSERT INTO tblLandlord ( LandLordName, LandLordEmail , LandLordPassword , LandLordPicture, IsEmailVerified, LandLordSignupDate, LastLoginDateTime, IsActive) " +
-                                                            " VALUES (@LandLordName, @LandLordEmail, @LandLordPassword , @LandLordPicture, @IsEmailVerified, @LandLordSignupDate, @LastLoginDateTime,  @IsActive) ", con))
+                                                            " VALUES (@LandLordName, @LandLordEmail, @LandLordPassword , @LandLordPicture, @IsEmailVerified, @LandLordSignupDate, @LastLoginDateTime,  @IsActive) select CAST(scope_identity() AS int) ", con))
                 {
                     command.Parameters.AddWithValue("@LandLordName", pLandlord.LandLordName);
                     command.Parameters.AddWithValue("@LandLordEmail", pLandlord.LandLordEmail);
@@ -55,7 +55,7 @@ namespace ClassLibrary_PropertyManager.Controller
                     command.Parameters.AddWithValue("@IsActive", pLandlord.IsActive);
 
 
-                    isSucess = command.ExecuteNonQuery();
+                    isSucess = Convert.ToInt32(command.ExecuteScalar());
 
 
                 }
@@ -67,6 +67,8 @@ namespace ClassLibrary_PropertyManager.Controller
             return isSucess;
 
         }
+
+
 
         public static int UpdateLandlordrFromEmail(int _LandlordID)
         {
