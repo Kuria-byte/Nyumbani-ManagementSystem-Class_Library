@@ -1,6 +1,7 @@
 ﻿using ClassLibrary_PropertyManager.Model;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -42,5 +43,30 @@ namespace ClassLibrary_PropertyManager.Controller
             return isSucess;
 
         }
+
+        public static DataTable GetTenantContractByLandLordID(int pLandLordID)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM  tblTenantContract INNER JOIN tblTenantDetails on tblTenantContract.TenantID = tblTenantDetails.TenantID " +
+                    " INNER JOIN tblUnit on tblTenantContract.UnitID = tblUnit.UnitID  WHERE tblTenantContract.LandLordID = @LandLordID ORDER BY tblTenantContract.LandLordID ASC", con))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@LandLordID", pLandLordID);
+
+                        sda.Fill(dt);
+
+
+                    }
+                }
+            }
+            return dt;
+        }
+
     }
 }
