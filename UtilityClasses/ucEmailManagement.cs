@@ -77,6 +77,41 @@ namespace ClassLibrary_PropertyManager.UtilityClasses
 
         }
 
+        public static void SendTenantInvoice(string pEmail, string EmailMsg)
+        {
+
+            MailMessage msg = new MailMessage();
+
+            msg.From = new MailAddress(Global.gFromEmail);
+            msg.To.Add(pEmail);
+            msg.Subject = "Your latest bill : Nyumbani.com";
+
+
+            string strBody = EmailMsg;
+
+
+
+            msg.Body = strBody;
+            msg.IsBodyHtml = true;
+
+
+
+            using (SmtpClient client = new SmtpClient())
+            {
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(Global.gFromEmail, Global.gFromEmailPassword);
+                client.Host = "smtp.gmail.com";
+                client.Port = 587;
+                client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                client.Send(msg);
+            }
+
+
+
+        }
+
 
     }
 }

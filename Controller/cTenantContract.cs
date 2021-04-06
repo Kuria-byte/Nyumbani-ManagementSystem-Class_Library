@@ -44,6 +44,44 @@ namespace ClassLibrary_PropertyManager.Controller
 
         }
 
+
+        public static int UpdateTenantContract(mTenantContract pTenantContract)
+        {
+
+            int isSucess = 0;
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+
+                using (SqlCommand command = new SqlCommand("UPDATE tblTenantContract SET  [TenantID] = @TenantID, [LandLordID] = @LandLordID, [UnitID] = @UnitID, [TenantDeposit] = @TenantDeposit, " +
+                                                         " [TenantMonthlyRent] = @TenantMonthlyRent, [ContractStartDate] = @ContractStartDate, [ContractEndDate] = @ContractEndDate, [AgreementDocoument] = @AgreementDocoument," +
+                                                         " [ContractStatusID] = @ContractStatusID WHERE TenantContractID = @TenantContractID ", con))
+
+                {
+                    command.Parameters.AddWithValue("@TenantContractID", pTenantContract.TenantContractID);
+                    command.Parameters.AddWithValue("@TenantID", pTenantContract.TenantID);
+                    command.Parameters.AddWithValue("@LandLordID", pTenantContract.LandLordID);
+                    command.Parameters.AddWithValue("@UnitID", pTenantContract.UnitID);
+                    command.Parameters.AddWithValue("@TenantDeposit", pTenantContract.TenantDeposit);
+                    command.Parameters.AddWithValue("@TenantMonthlyRent", pTenantContract.TenantMonthlyRent);
+                    command.Parameters.AddWithValue("@ContractStartDate", pTenantContract.ContractStartDate);
+                    command.Parameters.AddWithValue("@ContractEndDate", pTenantContract.ContractEndDate);
+                    command.Parameters.AddWithValue("@AgreementDocoument", pTenantContract.AgreementDocoument);
+                    command.Parameters.AddWithValue("@ContractStatusID", pTenantContract.ContractStatusID);
+
+
+                    isSucess = command.ExecuteNonQuery();
+
+
+                }
+            }
+
+            return isSucess;
+
+
+        }
+
         public static DataTable GetTenantContractByLandLordID(int pLandLordID)
         {
             DataTable dt = new DataTable();
@@ -58,6 +96,30 @@ namespace ClassLibrary_PropertyManager.Controller
                     {
                         cmd.CommandType = CommandType.Text;
                         cmd.Parameters.AddWithValue("@LandLordID", pLandLordID);
+
+                        sda.Fill(dt);
+
+
+                    }
+                }
+            }
+            return dt;
+        }
+
+        public static DataTable GetTenantContractByTenantID(int pTenantID)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM  tblTenantContract INNER JOIN tblTenantDetails on tblTenantContract.TenantID = tblTenantDetails.TenantID " +
+                    "  WHERE tblTenantContract.TenantID = @TenantID ", con))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@TenantID", pTenantID);
 
                         sda.Fill(dt);
 
