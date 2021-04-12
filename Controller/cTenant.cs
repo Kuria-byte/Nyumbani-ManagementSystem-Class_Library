@@ -73,6 +73,28 @@ namespace ClassLibrary_PropertyManager.Controller
             return dt;
         }
 
+        public static DataTable GetTenantByTenantID(int pTenantID)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT  * FROM   tblTenantDetails WHERE TenantID = @TenantID ORDER BY TenantID ASC", con))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@TenantID", pTenantID);
+
+                        sda.Fill(dt);
+
+
+                    }
+                }
+            }
+            return dt;
+        }
 
         public static int UpdateTenant(mTenant pTenant)
         {
