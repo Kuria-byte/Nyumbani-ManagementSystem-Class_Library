@@ -46,8 +46,8 @@ namespace ClassLibrary_PropertyManager.Controller
             {
                 con.Open();
 
-                using (SqlCommand command = new SqlCommand("INSERT INTO tblInvoice (TenantID ,LandLordID, InvoiceType , InvoiceAmount, InvoiceGeneratedOn, InvoiceDueDate , InvoiceNotes , InvoiceAttatchments, InvoiceReminder ) " +
-                                                            " VALUES (@TenantID, @LandLordID, @InvoiceType, @InvoiceAmount , @InvoiceGeneratedOn, @InvoiceDueDate, @InvoiceNotes, @InvoiceAttatchments, @InvoiceReminder) select CAST(scope_identity() AS int) ", con))
+                using (SqlCommand command = new SqlCommand("INSERT INTO tblInvoice (TenantID ,LandLordID, InvoiceType , InvoiceAmount, InvoiceGeneratedOn, InvoiceDueDate , InvoiceNotes , InvoiceAttatchments, InvoiceReminder, InvoiceStatus ) " +
+                                                            " VALUES (@TenantID, @LandLordID, @InvoiceType, @InvoiceAmount , @InvoiceGeneratedOn, @InvoiceDueDate, @InvoiceNotes, @InvoiceAttatchments, @InvoiceReminder, @InvoiceStatus) select CAST(scope_identity() AS int) ", con))
                 {
                     command.Parameters.AddWithValue("@TenantID", pInvoice.TenantID);
                     command.Parameters.AddWithValue("@LandLordID", pInvoice.LandLordID);
@@ -58,15 +58,13 @@ namespace ClassLibrary_PropertyManager.Controller
                     command.Parameters.AddWithValue("@InvoiceNotes", pInvoice.InvoiceNotes);
                     command.Parameters.AddWithValue("@InvoiceAttatchments", pInvoice.InvoiceAttatchments);
                     command.Parameters.AddWithValue("@InvoiceReminder", pInvoice.InvoiceReminder);
-                   
+                    command.Parameters.AddWithValue("@InvoiceStatus", pInvoice.InvoiceStatus);
 
                     isSucess = Convert.ToInt32(command.ExecuteScalar());
 
 
                 }
             }
-
-
 
 
             return isSucess;

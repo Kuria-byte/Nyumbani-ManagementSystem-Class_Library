@@ -78,6 +78,28 @@ namespace ClassLibrary_PropertyManager.Controller
 
         }
 
+        public static DataTable GetUnitByUnitID(int pUnitID)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM  tblUnit INNER JOIN tblBuildings ON tblUnit.BuildingID = tblBuildings.BuildingID  WHERE tblUnit.UnitID = @UnitID ORDER BY tblUnit.UnitID ASC", con))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@UnitID", pUnitID);
+
+                        sda.Fill(dt);
+
+
+                    }
+                }
+            }
+            return dt;
+        }
         public static DataTable GetUnitByLandLordID(int pLandLordID)
         {
             DataTable dt = new DataTable();
@@ -123,7 +145,31 @@ namespace ClassLibrary_PropertyManager.Controller
             }
             return dt;
         }
+        public static int UpdateUnitAvailability(int UnitId, bool Availbalble)
+        {
 
+            int isSucess = 0;
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+
+                using (SqlCommand command = new SqlCommand("UPDATE tblUnit SET  [Available] = @Available WHERE UnitID = @UnitID ", con))
+
+                {
+                    command.Parameters.AddWithValue("@UnitID", UnitId);
+                    command.Parameters.AddWithValue("@Available",Availbalble);
+
+                    isSucess = command.ExecuteNonQuery();
+
+
+                }
+            }
+
+            return isSucess;
+
+
+        }
         public static int UpdateUnit(mUnit pUnit)
         {
 

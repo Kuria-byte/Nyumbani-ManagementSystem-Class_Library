@@ -18,5 +18,6 @@ namespace ClassLibrary_PropertyManager.Model
         public string InvoiceAttatchments;
         public bool InvoiceReminder;
         public DateTime InvoiceGeneratedOn;
+        public int InvoiceStatus;
     }
 }
