@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Controller\cAdminLogin.cs" />
+    <Compile Include="Controller\cAnnouncment.cs" />
     <Compile Include="Controller\cBuilding.cs" />
     <Compile Include="Controller\cInvoice.cs" />
     <Compile Include="Controller\cLandLords.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Controller\cUnit.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="Model\mAdminLogin.cs" />
+    <Compile Include="Model\mAnnouncment.cs" />
     <Compile Include="Model\mBuilding.cs" />
     <Compile Include="Model\mInvoice.cs" />
     <Compile Include="Model\mLandLords.cs" />

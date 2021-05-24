@@ -37,6 +37,32 @@ namespace ClassLibrary_PropertyManager.Controller
             return dt;
         }
 
+        public static DataTable GetInvoiceByBuildingID(int pBuildingID)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+
+
+                using (SqlCommand cmd = new SqlCommand("SELECT * FROM  tblInvoice  " +
+               "  WHERE tblInvoice.BuildingID = @BuildingID ORDER BY tblInvoice.BuildingID ASC", con))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@BuildingID", pBuildingID);
+
+                        sda.Fill(dt);
+
+
+                    }
+                }
+            }
+            return dt;
+        }
+
         public static int AddNewInvoice(mInvoice pInvoice)
         {
 
@@ -47,10 +73,11 @@ namespace ClassLibrary_PropertyManager.Controller
                 con.Open();
 
                 using (SqlCommand command = new SqlCommand("INSERT INTO tblInvoice (TenantID ,LandLordID, InvoiceType , InvoiceAmount, InvoiceGeneratedOn, InvoiceDueDate , InvoiceNotes , InvoiceAttatchments, InvoiceReminder, InvoiceStatus ) " +
-                                                            " VALUES (@TenantID, @LandLordID, @InvoiceType, @InvoiceAmount , @InvoiceGeneratedOn, @InvoiceDueDate, @InvoiceNotes, @InvoiceAttatchments, @InvoiceReminder, @InvoiceStatus) select CAST(scope_identity() AS int) ", con))
+                                                            " VALUES (@TenantID, @LandLordID,@BuildingID, @InvoiceType, @InvoiceAmount , @InvoiceGeneratedOn, @InvoiceDueDate, @InvoiceNotes, @InvoiceAttatchments, @InvoiceReminder, @InvoiceStatus) select CAST(scope_identity() AS int) ", con))
                 {
                     command.Parameters.AddWithValue("@TenantID", pInvoice.TenantID);
                     command.Parameters.AddWithValue("@LandLordID", pInvoice.LandLordID);
+                
                     command.Parameters.AddWithValue("@InvoiceType", pInvoice.InvoiceType);
                     command.Parameters.AddWithValue("@InvoiceAmount", pInvoice.InvoiceAmount);
                     command.Parameters.AddWithValue("@InvoiceGeneratedOn", DateTime.Now);

@@ -96,7 +96,28 @@ namespace ClassLibrary_PropertyManager.Controller
             }
             return dt;
         }
+        public static DataTable GetBuildingByBuildingID(int pBuildingID)
+        {
+            DataTable dt = new DataTable();
 
+            using (SqlConnection con = new SqlConnection(Global.connString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT  * FROM   tblBuildings WHERE BuildingID = @BuildingID ORDER BY BuildingID ASC", con))
+                {
+                    using (SqlDataAdapter sda = new SqlDataAdapter(cmd))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.Parameters.AddWithValue("@BuildingID", pBuildingID);
+
+                        sda.Fill(dt);
+
+
+                    }
+                }
+            }
+            return dt;
+        }
         public static int UpdateBuildig(mBuilding pBuilding)
         {
 
